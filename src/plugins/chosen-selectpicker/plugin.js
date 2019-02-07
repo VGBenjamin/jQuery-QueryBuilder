@@ -23,9 +23,11 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     });
 
     this.on('afterCreateRuleOperators', function(e, rule) {
-        if (e.builder.getOperators(rule.filter).length > 1) {
-            rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
-        }
+        rule.$el.find(Selectors.rule_operator).removeClass('form-control').chosen(options);
+    });
+	
+    this.on('afterCreateRuleInput', function(e, rule) {
+        rule.$el.find(Selectors.rule_value).removeClass('form-control').chosen(options);
     });
 
     // update selectpicker on change
@@ -36,9 +38,14 @@ QueryBuilder.define('chosen-selectpicker', function(options) {
     this.on('afterUpdateRuleOperator', function(e, rule) {
         rule.$el.find(Selectors.rule_operator).trigger('chosen:updated');
     });
+	
+    this.on('afterUpdateRuleFilter', function(e, rule) {
+        rule.$el.find(Selectors.rule_value).trigger('chosen:updated');
+    });
 
     this.on('beforeDeleteRule', function(e, rule) {
         rule.$el.find(Selectors.rule_filter).chosen('destroy');
         rule.$el.find(Selectors.rule_operator).chosen('destroy');
+        rule.$el.find(Selectors.rule_value).chosen('destroy');
     });
 });
